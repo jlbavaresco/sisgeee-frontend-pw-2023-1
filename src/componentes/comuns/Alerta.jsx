@@ -27,6 +27,6 @@ const Alerta = ({ alerta }) => {
             }
         </>
     )
-
-
 }
+
+export default Alerta;

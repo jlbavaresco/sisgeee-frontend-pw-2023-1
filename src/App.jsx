@@ -4,6 +4,7 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import Menu from './componentes/Menu'
 import Home from './componentes/telas/Home'
+import Predio from './componentes/telas/predio/Predio'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
         <Menu/>
         <Routes>
           <Route exact="true" path='/' element={<Home/>}/>
+          <Route exact="true" path='/predios' element={<Predio/>}/>
         </Routes>
     </BrowserRouter>
   );

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import PredioContext from "./PredioContext";
+import Tabela from "./Tabela";
 
 function Predio() {
 
@@ -27,6 +28,7 @@ function Predio() {
                     .catch(err => setAlerta({ status: "error", message: err }))
 
         }
+        recuperaPredios();
     }
 
     useEffect(()=> {
@@ -37,7 +39,7 @@ function Predio() {
         <PredioContext.Provider value={{alerta, setAlerta,
                                         listaObjetos, setListaObjetos, 
                                         recuperaPredios, remover}}>
-
+            <Tabela/>
         </PredioContext.Provider>
     )
 
