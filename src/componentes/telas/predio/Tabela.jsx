@@ -4,13 +4,28 @@ import Alerta from '../../comuns/Alerta'
 
 function Tabela() {
 
-    const { alerta, setAlerta, listaObjetos, remover }
+    const { alerta, setAlerta, listaObjetos, remover,
+        setEditar, setObjeto, recuperar }
         = useContext(PredioContext);
 
     return (
         <div style={{ padding: '20px' }}>
             <h1>Prédios</h1>
             <Alerta alerta={alerta} />
+            <button type="button" className="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalEdicao"
+                onClick={() => {
+                    setEditar(false);
+                    setAlerta({ status: "", message: "" });
+                    setObjeto({
+                        codigo: 0,
+                        nome: "", descricao: "", sigla: ""
+                    });
+
+                }}>
+                Novo
+            </button>
             {listaObjetos.length === 0 &&
                 <h1>Nenhum prédio encontrado</h1>}
             {listaObjetos.length > 0 && (
@@ -29,7 +44,14 @@ function Tabela() {
                             {listaObjetos.map(objeto => (
                                 <tr key={objeto.codigo}>
                                     <td align="center">
-                                        <button className="btn btn-info" title="Editar">
+                                        <button className="btn btn-info" title="Editar"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalEdicao"
+                                            onClick={() => {
+                                                recuperar(objeto.codigo);
+                                                setEditar(true);
+                                                setAlerta({ status: "", message: "" });
+                                            }}>
                                             <i className="bi bi-pencil-square"></i>
                                         </button>
                                         <button className="btn btn-danger" title="Remover"
