@@ -1,8 +1,9 @@
-function Carregando(){
+function Carregando() {
     return (
-        <>
-            <h1>Carregando....</h1>
-        </>
+        <div className="d-flex align-items-center m-5">
+            <strong>Carregando...</strong>
+            <div className="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+        </div>
     )
 }
 
