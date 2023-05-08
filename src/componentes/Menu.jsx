@@ -20,6 +20,7 @@ const Menu = () => {
                             <ul className="dropdown-menu">
                                 <li>
                                     <NavLink className="dropdown-item" to="/predios">Predios</NavLink>
+                                    <NavLink className="dropdown-item" to="/salas">Salas</NavLink>
                                 </li>
                             </ul>
                         </li>
