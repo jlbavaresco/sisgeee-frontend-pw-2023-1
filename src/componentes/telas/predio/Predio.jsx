@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PredioContext from "./PredioContext";
 import Tabela from "./Tabela";
 import Form from "./Form";
+import Carregando from "../../comuns/Carregando";
 
 function Predio() {
 
@@ -12,6 +13,7 @@ function Predio() {
         codigo: "", nome: "",
         descricao: "", sigla: ""
     });
+    const [carregando, setCarrengando] = useState(true);
 
     const recuperar = async codigo => {
         await fetch(`${process.env.REACT_APP_ENDERECO_API}/predios/${codigo}`)
@@ -42,14 +44,16 @@ function Predio() {
     const handleChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        setObjeto({...objeto, [name] : value});
+        setObjeto({ ...objeto, [name]: value });
     }
 
     const recuperaPredios = async () => {
+        setCarrengando(true);
         await fetch(`${process.env.REACT_APP_ENDERECO_API}/predios`)
             .then(response => response.json())
             .then(json => setListaObjetos(json))
             .catch(err => setAlerta({ status: "error", message: err }))
+        setCarrengando(false);
     }
 
     const remover = async objeto => {
@@ -78,12 +82,12 @@ function Predio() {
             alerta, setAlerta,
             listaObjetos, setListaObjetos,
             recuperaPredios, remover,
-            objeto, setObjeto, 
-            editar, setEditar, 
-            recuperar, acaoCadastrar,  handleChange
+            objeto, setObjeto,
+            editar, setEditar,
+            recuperar, acaoCadastrar, handleChange
         }}>
-            <Tabela />
-            <Form/>
+            {!carregando ? <Tabela /> : <Carregando />}
+            <Form />
         </PredioContext.Provider>
     )
 
