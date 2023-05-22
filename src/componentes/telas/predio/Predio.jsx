@@ -5,8 +5,11 @@ import Form from "./Form";
 import Carregando from "../../comuns/Carregando";
 import { getPrediosAPI, getPredioPorCodigoAPI, deletePredioPorCodigoAPI, cadastraPrediosAPI } from '../../servicos/PredioServico';
 import WithAuth from "../../seg/WithAuth";
+import { useNavigate } from "react-router-dom";
 
 function Predio() {
+    
+    let navigate = useNavigate();
 
     const [alerta, setAlerta] = useState({ status: "", message: "" });
     const [listaObjetos, setListaObjetos] = useState([]);
@@ -18,7 +21,12 @@ function Predio() {
     const [carregando, setCarrengando] = useState(true);
 
     const recuperar = async codigo => {
-        setObjeto(await getPredioPorCodigoAPI(codigo));
+        try {
+            setObjeto(await getPredioPorCodigoAPI(codigo));
+        } catch (err) {
+            window.location.reload();
+            navigate("/login", { replace: true });
+        }
     }
 
     const acaoCadastrar = async e => {
@@ -26,13 +34,15 @@ function Predio() {
         const metodo = editar ? "PUT" : "POST";
         try {
             let retornoAPI = await cadastraPrediosAPI(objeto, metodo);
-            setAlerta({status :retornoAPI.status, message : retornoAPI.message});
+            setAlerta({ status: retornoAPI.status, message: retornoAPI.message });
             setObjeto(retornoAPI.objeto);
             if (!editar) {
                 setEditar(true);
             }
-        } catch(err){
+        } catch (err) {
             console.log(err);
+            window.location.reload();
+            navigate("/login", { replace: true });
         }
         recuperaPredios();
     }

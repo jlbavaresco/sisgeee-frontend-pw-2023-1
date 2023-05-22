@@ -12,9 +12,12 @@ import {
 import FormEquipamento from "./FormEquipamento";
 import TabelaEquipamentos from "./TabelaEquipamentos";
 import WithAuth from "../../seg/WithAuth";
+import { useNavigate } from "react-router-dom";
 
 
 function Predio() {
+
+    let navigate = useNavigate();
 
     const [alerta, setAlerta] = useState({ status: "", message: "" });
     const [listaObjetos, setListaObjetos] = useState([]);
@@ -27,26 +30,36 @@ function Predio() {
     const [listaPredios, setListaPredios] = useState([]);
     const [editarEquipamento, setEditarEquipamento] = useState(false);
     const [equipamento, setEquipamento] = useState({
-        codigo : "", descricao : "" , numero_serie : "", valor : "" , sala : ""
+        codigo: "", descricao: "", numero_serie: "", valor: "", sala: ""
     })
     const [listaEquipamentos, setListaEquipamentos] = useState([]);
     const [exibirEquipamentos, setExibirEquipamentos] = useState(false);
 
     const recuperarEquipamentos = async codigosala => {
-        setObjeto(await getSalaPorCodigoAPI(codigosala));
-        setListaEquipamentos(await getEquipamentosDaSalaAPI(codigosala));
-        setExibirEquipamentos(true);
+        try {
+            setObjeto(await getSalaPorCodigoAPI(codigosala));
+            setListaEquipamentos(await getEquipamentosDaSalaAPI(codigosala));
+            setExibirEquipamentos(true);
+        } catch (err) {
+            window.location.reload();
+            navigate("/login", { replace: true });
+        }
     }
 
     const recuperarEquipamento = async codigo => {
-        setEquipamento(await getEquipamentoPorCodigoAPI(codigo));
+        try {
+            setEquipamento(await getEquipamentoPorCodigoAPI(codigo));
+        } catch (err) {
+            window.location.reload();
+            navigate("/login", { replace: true });
+        }
     }
 
     const removerEquipamento = async equipamento => {
-        if (window.confirm('Deseja remover este equipamento?')){
-            let retornoAPI = 
-            await deleteEquipamentoPorCodigoAPI(equipamento.codigo);
-            setAlerta({status : retornoAPI.status, message : retornoAPI.message});
+        if (window.confirm('Deseja remover este equipamento?')) {
+            let retornoAPI =
+                await deleteEquipamentoPorCodigoAPI(equipamento.codigo);
+            setAlerta({ status: retornoAPI.status, message: retornoAPI.message });
             setListaEquipamentos(await getEquipamentosDaSalaAPI(objeto.codigo));
         }
     }
@@ -62,19 +75,25 @@ function Predio() {
                 setEditarEquipamento(true);
             }
         } catch (err) {
-            console.log(err);
+            window.location.reload();
+            navigate("/login", { replace: true });
         }
         recuperarEquipamentos(objeto.codigo);
-    }    
+    }
 
     const handleChangeEquipamento = (e) => {
         const name = e.target.name;
         const value = e.target.value;
         setEquipamento({ ...equipamento, [name]: value });
-    }    
+    }
 
     const recuperar = async codigo => {
-        setObjeto(await getSalaPorCodigoAPI(codigo));
+        try {
+            setObjeto(await getSalaPorCodigoAPI(codigo));
+        } catch (err) {
+            window.location.reload();
+            navigate("/login", { replace: true });
+        }
     }
 
     const acaoCadastrar = async e => {
@@ -88,7 +107,8 @@ function Predio() {
                 setEditar(true);
             }
         } catch (err) {
-            console.log(err);
+            window.location.reload();
+            navigate("/login", { replace: true });
         }
         recuperaSalas();
     }
@@ -111,8 +131,14 @@ function Predio() {
 
     const remover = async objeto => {
         if (window.confirm('Deseja remover este objeto?')) {
-            let retornoAPI = await deleteSalaPorCodigoAPI(objeto.codigo);
-            setAlerta({ status: retornoAPI.status, message: retornoAPI.message });
+            try {
+                let retornoAPI = await deleteSalaPorCodigoAPI(objeto.codigo);
+                setAlerta({ status: retornoAPI.status, message: retornoAPI.message });
+            } catch (err) {
+                console.log(err);
+                window.location.reload();
+                navigate("/login", { replace: true });
+            }
         }
         recuperaSalas();
     }
@@ -131,15 +157,15 @@ function Predio() {
             editar, setEditar,
             recuperar, acaoCadastrar, handleChange, listaPredios,
             listaEquipamentos, equipamento, setEquipamento, handleChangeEquipamento,
-            removerEquipamento, recuperarEquipamento, acaoCadastrarEquipamento, 
+            removerEquipamento, recuperarEquipamento, acaoCadastrarEquipamento,
             setEditarEquipamento, editarEquipamento, recuperarEquipamentos,
             setExibirEquipamentos
         }}>
-            {!carregando 
-            ? !exibirEquipamentos ? <Tabela /> : <TabelaEquipamentos/>
-            : <Carregando />}
+            {!carregando
+                ? !exibirEquipamentos ? <Tabela /> : <TabelaEquipamentos />
+                : <Carregando />}
             <Form />
-            <FormEquipamento/>
+            <FormEquipamento />
         </SalaContext.Provider>
     )
 
