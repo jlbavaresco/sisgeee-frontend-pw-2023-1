@@ -120,9 +120,14 @@ function Predio() {
     }
 
     const recuperaSalas = async () => {
-        setCarrengando(true);
-        setListaObjetos(await getSalasAPI());
-        setCarrengando(false);
+        try {
+            setCarrengando(true);
+            setListaObjetos(await getSalasAPI());
+            setCarrengando(false);
+        } catch (err) {
+            window.location.reload();
+            navigate("/login", { replace: true });
+        }
     }
 
     const recuperaPredios = async () => {

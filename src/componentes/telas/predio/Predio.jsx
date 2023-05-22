@@ -8,7 +8,7 @@ import WithAuth from "../../seg/WithAuth";
 import { useNavigate } from "react-router-dom";
 
 function Predio() {
-    
+
     let navigate = useNavigate();
 
     const [alerta, setAlerta] = useState({ status: "", message: "" });
@@ -54,15 +54,25 @@ function Predio() {
     }
 
     const recuperaPredios = async () => {
-        setCarrengando(true);
-        setListaObjetos(await getPrediosAPI());
-        setCarrengando(false);
+        try {
+            setCarrengando(true);
+            setListaObjetos(await getPrediosAPI());
+            setCarrengando(false);
+        } catch (err) {
+            window.location.reload();
+            navigate("/login", { replace: true });
+        }
     }
 
     const remover = async objeto => {
         if (window.confirm('Deseja remover este objeto?')) {
-            let retornoAPI = await deletePredioPorCodigoAPI(objeto.codigo);
-            setAlerta({ status: retornoAPI.status, message: retornoAPI.message });
+            try {
+                let retornoAPI = await deletePredioPorCodigoAPI(objeto.codigo);
+                setAlerta({ status: retornoAPI.status, message: retornoAPI.message });
+            } catch (err) {
+                window.location.reload();
+                navigate("/login", { replace: true });
+            }
         }
         recuperaPredios();
     }
