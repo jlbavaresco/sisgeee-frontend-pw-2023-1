@@ -1,10 +1,13 @@
+import Autenticacao from "../seg/Autenticacao";
+
 export const getSalasAPI = async () => {
     const response = 
         await fetch(`${process.env.REACT_APP_ENDERECO_API}/salas`,
         {
             method : "GET",
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "x-access-token": Autenticacao.pegaAutenticacao().token
             }
         });
     const data = await response.json();
@@ -17,7 +20,8 @@ export const getSalaPorCodigoAPI = async codigo => {
         {
             method : "GET",
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "x-access-token": Autenticacao.pegaAutenticacao().token
             }
         });
     const data = await response.json();
@@ -30,7 +34,8 @@ export const deleteSalaPorCodigoAPI = async codigo => {
         {
             method : "DELETE",
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "x-access-token": Autenticacao.pegaAutenticacao().token
             }
         });
     const data = await response.json();
@@ -42,7 +47,8 @@ export const cadastraSalasAPI = async (objeto, metodo) => {
         await fetch(`${process.env.REACT_APP_ENDERECO_API}/salas`,
         {
             method : metodo,
-            headers : {"Content-Type" : "application/json"},
+            headers : {"Content-Type" : "application/json",
+            "x-access-token": Autenticacao.pegaAutenticacao().token},
             body : JSON.stringify(objeto)
         });
     const data = await response.json();

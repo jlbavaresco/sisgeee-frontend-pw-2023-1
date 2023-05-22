@@ -11,6 +11,8 @@ import {
 } from '../../servicos/EquipamentoServico';
 import FormEquipamento from "./FormEquipamento";
 import TabelaEquipamentos from "./TabelaEquipamentos";
+import WithAuth from "../../seg/WithAuth";
+
 
 function Predio() {
 
@@ -143,4 +145,4 @@ function Predio() {
 
 }
 
-export default Predio;
+export default WithAuth(Predio);

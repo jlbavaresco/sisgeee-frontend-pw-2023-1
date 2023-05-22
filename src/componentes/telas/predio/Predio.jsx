@@ -4,6 +4,7 @@ import Tabela from "./Tabela";
 import Form from "./Form";
 import Carregando from "../../comuns/Carregando";
 import { getPrediosAPI, getPredioPorCodigoAPI, deletePredioPorCodigoAPI, cadastraPrediosAPI } from '../../servicos/PredioServico';
+import WithAuth from "../../seg/WithAuth";
 
 function Predio() {
 
@@ -76,4 +77,4 @@ function Predio() {
 
 }
 
-export default Predio;
+export default WithAuth(Predio);
