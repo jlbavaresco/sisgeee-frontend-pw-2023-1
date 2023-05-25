@@ -166,9 +166,9 @@ function Predio() {
             setEditarEquipamento, editarEquipamento, recuperarEquipamentos,
             setExibirEquipamentos
         }}>
-            {!carregando
-                ? !exibirEquipamentos ? <Tabela /> : <TabelaEquipamentos />
-                : <Carregando />}
+            <Carregando carregando={carregando}>
+                {!exibirEquipamentos ? <Tabela /> : <TabelaEquipamentos />}
+            </Carregando>
             <Form />
             <FormEquipamento />
         </SalaContext.Provider>

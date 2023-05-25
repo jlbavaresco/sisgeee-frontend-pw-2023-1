@@ -90,7 +90,9 @@ function Predio() {
             editar, setEditar,
             recuperar, acaoCadastrar, handleChange
         }}>
-            {!carregando ? <Tabela /> : <Carregando />}
+            <Carregando carregando={carregando}>
+                <Tabela />
+            </Carregando>
             <Form />
         </PredioContext.Provider>
     )
