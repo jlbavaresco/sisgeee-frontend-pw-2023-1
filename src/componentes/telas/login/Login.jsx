@@ -31,22 +31,27 @@ function Login() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
             }).then(response => response.json())
-                .then(json => {
-                    setAlerta({ status: "success", message: JSON.stringify(json) })
+              .then(json => {                    
+                    if (json.auth === false) {
+                        setAlerta({ status: "error", message: json.message })
+                    }                    
                     if (json.auth === true) {
                         setAutenticado(true);
                         gravaAutenticacao(json);
                     }
                 });
-            setCarrengando(false);
+            
         } catch (err) {
             console.error(err.message);
+            setAlerta({ status: "error", message: err.message })
+        } finally {
+            setCarrengando(false);
         }
 
         const autenticacao = pegaAutenticacao();
-        console.log(autenticacao);
-        console.log("token: " + autenticacao.token);
-        console.log("decoded: " + JSON.stringify(jwt_decode(autenticacao.token)));
+        //console.log(autenticacao);
+        //console.log("token: " + autenticacao.token);
+        //console.log("decoded: " + JSON.stringify(jwt_decode(autenticacao.token)));
 
 
     };
